@@ -1,0 +1,56 @@
+#root {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    flex-direction: column;
+}
+
+#title {
+    font-size: 8em;
+    font-family: Georgia;
+    color: lightgray;
+}
+
+.action-button {
+    margin-top: 20px;
+    font-size: 1.5em;
+    width: 200px;
+    display: inline-block;
+}
+
+.input {
+    width: 100%;
+    height: 100%;
+    font-size: 2.2em;
+    text-align: center;
+    caret-color: transparent;
+    cursor: pointer;
+    font-family: Georgia;
+}
+
+.input:hover {
+    outline: 0;
+    background-color: gray;
+    /* transition: 100ms background-color ease; */
+}
+
+.input:focus {
+    outline: 0;
+    background: lightgray;
+}
+
+.die-letter {
+    display: inline-flex;
+    width: 70px;
+    height: 70px;
+    font-size: 2.5em;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia;
+}
+
+.board-errors {
+    font-size: 1.5em;
+}
