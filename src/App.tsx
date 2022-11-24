@@ -1,10 +1,13 @@
+//PATCH NOTES---------
+//Fixed reset grid button
+//Added adjacency check to board validity
+
 import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 export type Nullable<T> = T | null;
 //look at catching promise
 //attempted overwriting of current letter passes over it instead - only when selecting that letter with the arrow keys?
-//reset grid doesn't return the gridvalues to the letter tray - will have to change function triggered by button when adding resetGrid()
 //add a check to board validity that ensures all dice are connected
 
 function App() {
@@ -28,6 +31,9 @@ function App() {
     ];
     const [letters, setLetters] = useState([] as string[]);
     const [boardErrors, setBoardErrors] = useState([] as string[]);
+    //const [floodCount, setFloodCount] = useState(0);
+    const [floodedCoords, setFloodedCoords] = useState([] as number[][]);
+    let floodCount = 0;
 
     useEffect(() => {
         rollDice();
@@ -49,7 +55,45 @@ function App() {
             columnWord = [];
             rowWord = [];
         }
+        // concat the return from checkAdjacencies which is an error of adjacencies or emptystring
+        checkAdjacencies();
+        if (floodCount < dice.length) {
+            errors = errors.concat("All tiles must be adjacent! ");
+            floodCount = 0;
+        }
         setBoardErrors(errors);
+    }
+
+    // Find an entry and flood fill on it
+    function checkAdjacencies() {
+        loopi: for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < rows; j++) {
+                if (grid[i][j] != "") {
+                    floodFill(i, j);
+                    break loopi;
+                }
+            }
+        }
+    }
+
+    function floodFill(i: number, j: number) {
+        if (i < 0 || i >= rows || j < 0 || j >= rows) {
+            return;
+        }
+        // Check if element is non empty and not checked
+        if (
+            grid[i][j] != "" &&
+            floodedCoords.findIndex((c) => c[0] === i && c[1] === j) === -1
+        ) {
+            floodedCoords.push([i, j]);
+            setFloodedCoords(floodedCoords.slice());
+            // setFloodCount(floodCount + 1);
+            floodCount++;
+            floodFill(i + 1, j);
+            floodFill(i - 1, j);
+            floodFill(i, j + 1);
+            floodFill(i, j - 1);
+        }
     }
 
     function checkRowValidity(rowWord: string[]) {
@@ -106,8 +150,21 @@ function App() {
                 refs.current[i].push(null);
             }
         }
-        setGrid(grid);
+        setGrid(grid.slice());
         setBoardErrors([]);
+    }
+
+    function resetGrid() {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < rows; j++) {
+                if (grid[i][j] != "") {
+                    letters.push(grid[i][j]);
+                    grid[i][j] = "";
+                }
+            }
+        }
+        setLetters(letters.slice());
+        setGrid(grid.slice());
     }
 
     function rollDice() {
@@ -246,7 +303,7 @@ function App() {
             <button className="action-button" onClick={rollDice}>
                 Re-Roll
             </button>
-            <button className="action-button" onClick={initializeGrid}>
+            <button className="action-button" onClick={resetGrid}>
                 Reset Grid
             </button>
             <p className="board-errors">{boardErrors}</p>
