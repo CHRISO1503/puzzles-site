@@ -3,12 +3,10 @@
 //Added adjacency check to board validity
 
 import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef } from "react";
-import reactLogo from "./assets/react.svg";
 import "./App.css";
 export type Nullable<T> = T | null;
 //look at catching promise
 //attempted overwriting of current letter passes over it instead - only when selecting that letter with the arrow keys?
-//add a check to board validity that ensures all dice are connected
 
 function App() {
     const rows = 12;
@@ -60,6 +58,7 @@ function App() {
         if (floodCount < dice.length) {
             errors = errors.concat("All tiles must be adjacent! ");
             floodCount = 0;
+            setFloodedCoords([]);
         }
         setBoardErrors(errors);
     }
@@ -152,6 +151,8 @@ function App() {
         }
         setGrid(grid.slice());
         setBoardErrors([]);
+        floodCount = 0;
+        setFloodedCoords([]);
     }
 
     function resetGrid() {
@@ -165,6 +166,8 @@ function App() {
         }
         setLetters(letters.slice());
         setGrid(grid.slice());
+        floodCount = 0;
+        setFloodedCoords([]);
     }
 
     function rollDice() {
