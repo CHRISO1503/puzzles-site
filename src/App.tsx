@@ -1,7 +1,3 @@
-//PATCH NOTES---------
-//Fixed reset grid button
-//Added adjacency check to board validity
-
 import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef } from "react";
 import "./App.css";
 export type Nullable<T> = T | null;
@@ -29,9 +25,10 @@ function App() {
     ];
     const [letters, setLetters] = useState([] as string[]);
     const [boardErrors, setBoardErrors] = useState([] as string[]);
-    //const [floodCount, setFloodCount] = useState(0);
     const [floodedCoords, setFloodedCoords] = useState([] as number[][]);
-    let floodCount = 0;
+    const floodCount = useRef(0);
+    const [rowVisible, setRowVisible] = useState(0);
+    const rowFadeTime = 250;
 
     useEffect(() => {
         rollDice();
@@ -55,9 +52,9 @@ function App() {
         }
         // concat the return from checkAdjacencies which is an error of adjacencies or emptystring
         checkAdjacencies();
-        if (floodCount < dice.length) {
+        if (floodCount.current < dice.length) {
             errors = errors.concat("All tiles must be adjacent! ");
-            floodCount = 0;
+            floodCount.current = 0;
             setFloodedCoords([]);
         }
         setBoardErrors(errors);
@@ -86,8 +83,7 @@ function App() {
         ) {
             floodedCoords.push([i, j]);
             setFloodedCoords(floodedCoords.slice());
-            // setFloodCount(floodCount + 1);
-            floodCount++;
+            floodCount.current++;
             floodFill(i + 1, j);
             floodFill(i - 1, j);
             floodFill(i, j + 1);
@@ -151,8 +147,9 @@ function App() {
         }
         setGrid(grid.slice());
         setBoardErrors([]);
-        floodCount = 0;
+        floodCount.current = 0;
         setFloodedCoords([]);
+        setRowVisible(1);
     }
 
     function resetGrid() {
@@ -166,8 +163,10 @@ function App() {
         }
         setLetters(letters.slice());
         setGrid(grid.slice());
-        floodCount = 0;
+        floodCount.current = 0;
         setFloodedCoords([]);
+        setRowVisible(0);
+        setInterval(() => setRowVisible(1), 10);
     }
 
     function rollDice() {
@@ -260,12 +259,12 @@ function App() {
     function moveFocus(movement: [number, number], i: number, j: number) {
         i += movement[0];
         j += movement[1];
-        if (i > rows - 1) {
+        if (i >= rows) {
             i = 0;
         } else if (i < 0) {
             i = rows - 1;
         }
-        if (j > rows - 1) {
+        if (j >= rows) {
             j = 0;
         } else if (j < 0) {
             j = rows - 1;
@@ -273,29 +272,49 @@ function App() {
         refs.current[i][j]?.focus();
     }
 
+    function rowsFadeIn(i: number) {
+        return rowFadeTime * (i + 1);
+    }
+
     return (
         <>
             <h1 id="title">Q-Less</h1>
-            <table style={{ width: tableSize, height: tableSize }}>
-                <tbody>
-                    {grid.map((row, i) => (
-                        <tr key={i}>
-                            {row.map((cell, j) => (
-                                <td key={j}>
-                                    <input
-                                        className="input"
-                                        type="text"
-                                        onChange={(e) => changeLetter(e, i, j)}
-                                        value={cell}
-                                        ref={(el) => (refs.current[i][j] = el)}
-                                        onKeyDown={(e) => handleKey(e, i, j)}
-                                    />
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div>
+                <table style={{ width: tableSize, height: tableSize }}>
+                    <tbody>
+                        {grid.map((row, i) => (
+                            <tr
+                                key={i}
+                                style={{
+                                    transitionDuration: `${rowsFadeIn(i)}ms`,
+                                }}
+                                className={`row ${
+                                    rowVisible == 0 ? "hidden" : ""
+                                }`}
+                            >
+                                {row.map((cell, j) => (
+                                    <td key={j}>
+                                        <input
+                                            className="input"
+                                            type="text"
+                                            onChange={(e) =>
+                                                changeLetter(e, i, j)
+                                            }
+                                            value={cell}
+                                            ref={(el) =>
+                                                (refs.current[i][j] = el)
+                                            }
+                                            onKeyDown={(e) =>
+                                                handleKey(e, i, j)
+                                            }
+                                        />
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
             <div>
                 {letters.map((letter, i) => (
                     <div className="die-letter" key={i}>
@@ -303,12 +322,14 @@ function App() {
                     </div>
                 ))}
             </div>
-            <button className="action-button" onClick={rollDice}>
-                Re-Roll
-            </button>
-            <button className="action-button" onClick={resetGrid}>
-                Reset Grid
-            </button>
+            <div>
+                <button className="action-button" onClick={rollDice}>
+                    Re-Roll
+                </button>
+                <button className="action-button" onClick={resetGrid}>
+                    Reset Grid
+                </button>
+            </div>
             <p className="board-errors">{boardErrors}</p>
         </>
     );
