@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef } from "react";
-import "./App.css";
+import "../styles/qless.css";
 export type Nullable<T> = T | null;
 //look at catching promise
 //attempted overwriting of current letter passes over it instead - only when selecting that letter with the arrow keys?
 
-function App() {
+function Qless() {
     const rows = 12;
     const tableSize = 700;
     const [grid, setGrid] = useState([] as string[][]);
@@ -335,4 +335,4 @@ function App() {
     );
 }
 
-export default App;
+export default Qless;
