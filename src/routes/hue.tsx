@@ -1,7 +1,7 @@
 import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef } from "react";
 import "../styles/hue.css";
 export type Nullable<T> = T | null;
-//make selectable anchor points in browser. while selecting, set styling to anchor point on hover
+//remove anchor point on click in anchormode
 
 function Hue() {
     const squareWidth = 100;
@@ -12,7 +12,7 @@ function Hue() {
     const [xGradient, setXGradient] = useState([] as number[]);
     const [yGradient, setYGradient] = useState([] as number[]);
     const [originColour, setOriginColour] = useState([] as number[]);
-    const [anchorPoints, setAnchorPoints] = useState([
+    const defaultAnchors = [
         [0, 0],
         [numberOfRows - 1, 0],
         [0, numberOfColumns - 1],
@@ -25,18 +25,21 @@ function Hue() {
         [0, Math.floor((numberOfColumns - 1) / 2)],
         [numberOfRows - 1, Math.ceil((numberOfColumns - 1) / 2)],
         [numberOfRows - 1, Math.floor((numberOfColumns - 1) / 2)],
-    ]);
+    ];
+    const [anchorPoints, setAnchorPoints] = useState(defaultAnchors);
     const [pointSelectedCoords, setPointSelectedCoords] = useState(
         [] as number[]
     );
     const [pointSelected, setPointSelected] = useState(false);
     const [anchoring, setAnchoring] = useState(true);
+    const [completionText, setCompletionText] = useState("");
 
     useEffect(() => {
         initializeColours();
     }, []);
 
     useEffect(() => {
+        setCompletionText("");
         setAnchoring(true);
         initializeGrid();
     }, [yGradient]);
@@ -48,12 +51,12 @@ function Hue() {
             Math.random() * 10 + 45,
         ]);
         setXGradient([
-            (Math.random() - 0.5) * 30,
+            Math.random() * 15,
             (Math.random() - 0.5) * 5,
             (Math.random() - 0.5) * 5,
         ]);
         setYGradient([
-            (Math.random() - 0.5) * 30,
+            -Math.random() * 15,
             (Math.random() - 0.5) * 5,
             (Math.random() - 0.5) * 5,
         ]);
@@ -73,7 +76,7 @@ function Hue() {
                 );
             }
         }
-        setInitialGrid(grid.slice());
+        setInitialGrid(grid.map((row) => row.slice()));
         setGrid(grid.slice());
     }
 
@@ -109,6 +112,9 @@ function Hue() {
     }
 
     function handleClick(i: number, j: number) {
+        if (completionText != "") {
+            setCompletionText("");
+        }
         if (anchoring) {
             if (
                 anchorPoints.findIndex((c) => c[0] === i && c[1] === j) !== -1
@@ -140,7 +146,30 @@ function Hue() {
     }
 
     function resetAnchorPoints() {
-        setAnchorPoints([]);
+        setAnchorPoints(defaultAnchors);
+    }
+
+    function checkProgress() {
+        if (completionText != "") {
+            setCompletionText("");
+            return;
+        }
+        let correct = 0;
+        let gridSize = numberOfColumns * numberOfRows;
+        for (let i = 0; i < numberOfRows; i++) {
+            for (let j = 0; j < numberOfColumns; j++) {
+                if (initialGrid[i][j] == grid[i][j]) {
+                    correct++;
+                }
+            }
+            if (correct == gridSize) {
+                setCompletionText("Puzzle complete.");
+            } else {
+                setCompletionText(
+                    `${gridSize - correct} tiles are incorrectly placed.`
+                );
+            }
+        }
     }
 
     return (
@@ -187,7 +216,11 @@ function Hue() {
                 <button className="action-button" onClick={resetAnchorPoints}>
                     Reset Fixed
                 </button>
+                <button className="action-button" onClick={checkProgress}>
+                    Check Progress
+                </button>
             </div>
+            <p className="board-completion">{completionText}</p>
         </>
     );
 }
