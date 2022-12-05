@@ -119,7 +119,20 @@ function Hue() {
             if (
                 anchorPoints.findIndex((c) => c[0] === i && c[1] === j) !== -1
             ) {
-                //remove anchor point
+                let newAnchorPoints = [] as number[][];
+                for (let index = 0; index < anchorPoints.length; index++) {
+                    if (
+                        anchorPoints[index][0] == i &&
+                        anchorPoints[index][1] == j
+                    ) {
+                        continue;
+                    }
+                    newAnchorPoints.push([
+                        anchorPoints[index][0],
+                        anchorPoints[index][1],
+                    ]);
+                }
+                setAnchorPoints(newAnchorPoints.slice());
             } else {
                 anchorPoints.push([i, j]);
                 setAnchorPoints(anchorPoints);
@@ -138,6 +151,7 @@ function Hue() {
                 grid[pointSelectedCoords[0]][pointSelectedCoords[1]] = temp;
                 setGrid(grid.slice());
                 setPointSelected(false);
+                checkProgress(false);
             } else {
                 setPointSelectedCoords([i, j]);
                 setPointSelected(true);
@@ -149,7 +163,7 @@ function Hue() {
         setAnchorPoints(defaultAnchors);
     }
 
-    function checkProgress() {
+    function checkProgress(manualCheck: boolean) {
         if (completionText != "") {
             setCompletionText("");
             return;
@@ -164,7 +178,7 @@ function Hue() {
             }
             if (correct == gridSize) {
                 setCompletionText("Puzzle complete.");
-            } else {
+            } else if (manualCheck) {
                 setCompletionText(
                     `${gridSize - correct} tiles are incorrectly placed.`
                 );
@@ -216,7 +230,10 @@ function Hue() {
                 <button className="action-button" onClick={resetAnchorPoints}>
                     Reset Fixed
                 </button>
-                <button className="action-button" onClick={checkProgress}>
+                <button
+                    className="action-button"
+                    onClick={() => checkProgress(true)}
+                >
                     Check Progress
                 </button>
             </div>
