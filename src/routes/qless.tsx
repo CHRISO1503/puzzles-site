@@ -57,6 +57,9 @@ export default function Qless() {
             floodCount.current = 0;
             setFloodedCoords([]);
         }
+        if (errors.length == 0){
+            errors = errors.concat("Puzzle Complete.")
+        }
         setBoardErrors(errors);
     }
 
