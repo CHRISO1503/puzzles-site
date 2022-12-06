@@ -4,7 +4,7 @@ export type Nullable<T> = T | null;
 //look at catching promise
 //attempted overwriting of current letter passes over it instead - only when selecting that letter with the arrow keys?
 
-function Qless() {
+export default function Qless() {
     const rows = 12;
     const tableSize = 700;
     const [grid, setGrid] = useState([] as string[][]);
@@ -28,7 +28,7 @@ function Qless() {
     const [floodedCoords, setFloodedCoords] = useState([] as number[][]);
     const floodCount = useRef(0);
     const [rowVisible, setRowVisible] = useState(0);
-    const rowFadeTime = 250;
+    const rowFadeTime = 100;
 
     useEffect(() => {
         rollDice();
@@ -315,7 +315,7 @@ function Qless() {
                     </tbody>
                 </table>
             </div>
-            <div>
+            <div style={{ minHeight: "72px" }}>
                 {letters.map((letter, i) => (
                     <div className="die-letter" key={i}>
                         {letter}
@@ -334,5 +334,3 @@ function Qless() {
         </>
     );
 }
-
-export default Qless;

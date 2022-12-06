@@ -54,6 +54,8 @@
 
 .board-errors {
     font-size: 1.5em;
+    display: inline-flex;
+    min-height: 50px;
 }
 
 .row {

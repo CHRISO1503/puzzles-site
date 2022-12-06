@@ -23,6 +23,7 @@
 .board-completion {
     font-size: 1.5em;
     display: inline-flex;
+    min-height: 50px;
 }
 
 @keyframes pulse {

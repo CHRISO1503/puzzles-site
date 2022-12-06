@@ -1,9 +1,7 @@
-import { ChangeEvent, useEffect, useState, KeyboardEvent, useRef } from "react";
+import { useEffect, useState } from "react";
 import "../styles/hue.css";
-export type Nullable<T> = T | null;
-//remove anchor point on click in anchormode
 
-function Hue() {
+export default function Hue() {
     const squareWidth = 100;
     const numberOfRows = 10;
     const numberOfColumns = 12;
@@ -241,5 +239,3 @@ function Hue() {
         </>
     );
 }
-
-export default Hue;

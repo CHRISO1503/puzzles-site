@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/index.css";
-import Home from "./routes/home";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import Home from "./routes/home";
 import Qless from "./routes/qless";
 import Hue from "./routes/hue";
+import Kakuro from "./routes/kakuro";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
         path: "/hue",
         element: <Hue />,
     },
+    {
+        path: "/kakuro",
+        element: <Kakuro />,
+    }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
