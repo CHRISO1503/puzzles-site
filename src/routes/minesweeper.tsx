@@ -61,6 +61,7 @@ export default function Minesweeper() {
         }
         setMines(mines.slice());
         puzzleFinished.current = false;
+        setCompletionText("");
     };
 
     const initializeGrid = () => {
@@ -223,19 +224,25 @@ export default function Minesweeper() {
 
     return (
         <>
-            <div>
+            <h1 className="minesweeper" id="title">Minesweeper</h1>
+            <div className="minesweeper crt board">
                 {grid.map((row, i) => (
                     <div
                         key={i}
                         style={{
                             display: "flex",
+                            userSelect: "none",
                         }}
                     >
                         {row.map((cell, j) => (
                             <img
                                 key={j}
                                 src={`src\\assets\\${TILE_ARRAY[cell]}.png`}
-                                style={{ width: CELL_SIZE, height: CELL_SIZE }}
+                                style={{
+                                    width: CELL_SIZE,
+                                    height: CELL_SIZE,
+                                    userSelect: "none",
+                                }}
                                 onClick={() => handleLeftClick(i, j)}
                                 onContextMenu={(e) => {
                                     handleRightClick(i, j);
@@ -247,10 +254,10 @@ export default function Minesweeper() {
                     </div>
                 ))}
             </div>
-            <button className="action-button" onClick={initializeMines}>
-                    New Game
-                </button>
-            <p className="board-completion">{completionText}</p>
+            <button className="minesweeper action-button" onClick={initializeMines}>
+                New Game
+            </button>
+            <p className="minesweeper board-completion">{completionText}</p>
         </>
     );
 }

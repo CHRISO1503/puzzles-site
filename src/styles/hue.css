@@ -1,29 +1,45 @@
-#title {
+.hue#title {
     font-size: 8em;
-    font-family: Georgia;
-    color: lightgray;
+    color: rgb(0, 255, 85);
+    font-weight: bold;
+    margin-top: 50px;
+    margin-bottom: 0px;
 }
 
-.action-button {
+.hue.action-button {
     margin-top: 20px;
     font-size: 1.5em;
-    width: 260px;
+    width: 300px;
     display: inline-block;
     margin: 15px;
+    border-radius: 4px;
+    border-color: rgb(0, 255, 85);
+    background-color: transparent;
+    color: rgb(0, 255, 85);
+    font-weight: bold;
 }
 
-.selected-tile {
+.hue.selected-tile {
     animation: pulse 1s ease infinite;
 }
 
-.anchor-point {
+.hue.anchor-point {
     border-radius: 15px;
 }
 
-.board-completion {
+.hue.board-completion {
     font-size: 1.5em;
     display: inline-flex;
     min-height: 50px;
+    color:rgb(0, 255, 85);
+}
+
+.hue.board {
+    border-color: rgb(0, 255, 85);
+    border-width: 5px;
+    border-style: solid;
+    margin-bottom: 10px;
+    padding: 10px;
 }
 
 @keyframes pulse {
