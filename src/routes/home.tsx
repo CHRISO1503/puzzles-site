@@ -22,8 +22,8 @@ export default function Home() {
                     </tr>
                     <tr>
                         <td className="home-td">
-                            <Link to="/kakuro" className="nav-button">
-                                Kakuro
+                            <Link to="/minesweeper" className="nav-button">
+                                Minesweeper
                             </Link>
                         </td>
                     </tr>

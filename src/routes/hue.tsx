@@ -2,29 +2,29 @@ import { useEffect, useState } from "react";
 import "../styles/hue.css";
 
 export default function Hue() {
-    const squareWidth = 100;
-    const numberOfRows = 10;
-    const numberOfColumns = 12;
+    const SQUARE_WIDTH = 100;
+    const NUMBER_OF_ROWS = 10;
+    const NUMBER_OF_COLUMNS = 12;
     const [grid, setGrid] = useState([] as number[][][]);
     const [initialGrid, setInitialGrid] = useState([] as number[][][]);
     const [xGradient, setXGradient] = useState([] as number[]);
     const [yGradient, setYGradient] = useState([] as number[]);
     const [originColour, setOriginColour] = useState([] as number[]);
-    const defaultAnchors = [
+    const DEFAULT_ANCHORS = [
         [0, 0],
-        [numberOfRows - 1, 0],
-        [0, numberOfColumns - 1],
-        [numberOfRows - 1, numberOfColumns - 1],
-        [Math.ceil((numberOfRows - 1) / 2), 0],
-        [Math.floor((numberOfRows - 1) / 2), 0],
-        [Math.ceil((numberOfRows - 1) / 2), numberOfColumns - 1],
-        [Math.floor((numberOfRows - 1) / 2), numberOfColumns - 1],
-        [0, Math.ceil((numberOfColumns - 1) / 2)],
-        [0, Math.floor((numberOfColumns - 1) / 2)],
-        [numberOfRows - 1, Math.ceil((numberOfColumns - 1) / 2)],
-        [numberOfRows - 1, Math.floor((numberOfColumns - 1) / 2)],
+        [NUMBER_OF_ROWS - 1, 0],
+        [0, NUMBER_OF_COLUMNS - 1],
+        [NUMBER_OF_ROWS - 1, NUMBER_OF_COLUMNS - 1],
+        [Math.ceil((NUMBER_OF_ROWS - 1) / 2), 0],
+        [Math.floor((NUMBER_OF_ROWS - 1) / 2), 0],
+        [Math.ceil((NUMBER_OF_ROWS - 1) / 2), NUMBER_OF_COLUMNS - 1],
+        [Math.floor((NUMBER_OF_ROWS - 1) / 2), NUMBER_OF_COLUMNS - 1],
+        [0, Math.ceil((NUMBER_OF_COLUMNS - 1) / 2)],
+        [0, Math.floor((NUMBER_OF_COLUMNS - 1) / 2)],
+        [NUMBER_OF_ROWS - 1, Math.ceil((NUMBER_OF_COLUMNS - 1) / 2)],
+        [NUMBER_OF_ROWS - 1, Math.floor((NUMBER_OF_COLUMNS - 1) / 2)],
     ];
-    const [anchorPoints, setAnchorPoints] = useState(defaultAnchors);
+    const [anchorPoints, setAnchorPoints] = useState(DEFAULT_ANCHORS);
     const [pointSelectedCoords, setPointSelectedCoords] = useState(
         [] as number[]
     );
@@ -62,9 +62,9 @@ export default function Hue() {
 
     function initializeGrid() {
         let grid = [] as number[][][];
-        for (let i = 0; i < numberOfRows; i++) {
+        for (let i = 0; i < NUMBER_OF_ROWS; i++) {
             grid.push([]);
-            for (let j = 0; j < numberOfColumns; j++) {
+            for (let j = 0; j < NUMBER_OF_COLUMNS; j++) {
                 grid[i].push(
                     addArrayMultiple(
                         addArrayMultiple(originColour, xGradient, i),
@@ -80,21 +80,21 @@ export default function Hue() {
 
     function shuffleBoard() {
         setAnchoring(false);
-        for (let i = 0; i < numberOfRows; i++) {
-            for (let j = 0; j < numberOfColumns; j++) {
+        for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+            for (let j = 0; j < NUMBER_OF_COLUMNS; j++) {
                 if (
                     anchorPoints.findIndex((c) => c[0] === i && c[1] === j) ===
                     -1
                 ) {
-                    let swapI = Math.floor(Math.random() * numberOfRows);
-                    let swapJ = Math.floor(Math.random() * numberOfColumns);
+                    let swapI = Math.floor(Math.random() * NUMBER_OF_ROWS);
+                    let swapJ = Math.floor(Math.random() * NUMBER_OF_COLUMNS);
                     while (
                         anchorPoints.findIndex(
                             (c) => c[0] === swapI && c[1] === swapJ
                         ) !== -1
                     ) {
-                        swapI = Math.floor(Math.random() * numberOfRows);
-                        swapJ = Math.floor(Math.random() * numberOfColumns);
+                        swapI = Math.floor(Math.random() * NUMBER_OF_ROWS);
+                        swapJ = Math.floor(Math.random() * NUMBER_OF_COLUMNS);
                     }
                     let temp = grid[i][j];
                     grid[i][j] = grid[swapI][swapJ];
@@ -158,7 +158,7 @@ export default function Hue() {
     }
 
     function resetAnchorPoints() {
-        setAnchorPoints(defaultAnchors);
+        setAnchorPoints(DEFAULT_ANCHORS);
     }
 
     function checkProgress(manualCheck: boolean) {
@@ -167,9 +167,9 @@ export default function Hue() {
             return;
         }
         let correct = 0;
-        let gridSize = numberOfColumns * numberOfRows;
-        for (let i = 0; i < numberOfRows; i++) {
-            for (let j = 0; j < numberOfColumns; j++) {
+        let gridSize = NUMBER_OF_COLUMNS * NUMBER_OF_ROWS;
+        for (let i = 0; i < NUMBER_OF_ROWS; i++) {
+            for (let j = 0; j < NUMBER_OF_COLUMNS; j++) {
                 if (initialGrid[i][j] == grid[i][j]) {
                     correct++;
                 }
@@ -210,8 +210,8 @@ export default function Hue() {
                                 style={{
                                     display: "table-cell",
                                     backgroundColor: `hsl(${cell[0]} ${cell[1]}% ${cell[2]}%)`,
-                                    width: squareWidth,
-                                    height: squareWidth,
+                                    width: SQUARE_WIDTH,
+                                    height: SQUARE_WIDTH,
                                 }}
                             ></div>
                         ))}

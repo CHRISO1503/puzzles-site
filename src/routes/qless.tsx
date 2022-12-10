@@ -5,7 +5,7 @@ export type Nullable<T> = T | null;
 //attempted overwriting of current letter passes over it instead - only when selecting that letter with the arrow keys?
 
 export default function Qless() {
-    const rows = 12;
+    const ROWS = 12;
     const tableSize = 700;
     const [grid, setGrid] = useState([] as string[][]);
     const refs = useRef([] as Nullable<HTMLInputElement>[][]);
@@ -40,8 +40,8 @@ export default function Qless() {
         let columnWord = [] as string[];
         let rowWord = [] as string[];
         let errors = [] as string[];
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < ROWS; i++) {
+            for (let j = 0; j < ROWS; j++) {
                 columnWord.push(grid[i][j]);
                 rowWord.push(grid[j][i]);
             }
@@ -65,8 +65,8 @@ export default function Qless() {
 
     // Find an entry and flood fill on it
     function checkAdjacencies() {
-        loopi: for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < rows; j++) {
+        loopi: for (let i = 0; i < ROWS; i++) {
+            for (let j = 0; j < ROWS; j++) {
                 if (grid[i][j] != "") {
                     floodFill(i, j);
                     break loopi;
@@ -76,7 +76,7 @@ export default function Qless() {
     }
 
     function floodFill(i: number, j: number) {
-        if (i < 0 || i >= rows || j < 0 || j >= rows) {
+        if (i < 0 || i >= ROWS || j < 0 || j >= ROWS) {
             return;
         }
         // Check if element is non empty and not checked
@@ -140,10 +140,10 @@ export default function Qless() {
 
     function initializeGrid() {
         let grid = [] as string[][];
-        for (let i = 0; i < rows; i++) {
+        for (let i = 0; i < ROWS; i++) {
             grid.push([]);
             refs.current.push([]);
-            for (let j = 0; j < rows; j++) {
+            for (let j = 0; j < ROWS; j++) {
                 grid[i].push("");
                 refs.current[i].push(null);
             }
@@ -156,8 +156,8 @@ export default function Qless() {
     }
 
     function resetGrid() {
-        for (let i = 0; i < rows; i++) {
-            for (let j = 0; j < rows; j++) {
+        for (let i = 0; i < ROWS; i++) {
+            for (let j = 0; j < ROWS; j++) {
                 if (grid[i][j] != "") {
                     letters.push(grid[i][j]);
                     grid[i][j] = "";
@@ -262,20 +262,20 @@ export default function Qless() {
     function moveFocus(movement: [number, number], i: number, j: number) {
         i += movement[0];
         j += movement[1];
-        if (i >= rows) {
+        if (i >= ROWS) {
             i = 0;
         } else if (i < 0) {
-            i = rows - 1;
+            i = ROWS - 1;
         }
-        if (j >= rows) {
+        if (j >= ROWS) {
             j = 0;
         } else if (j < 0) {
-            j = rows - 1;
+            j = ROWS - 1;
         }
         refs.current[i][j]?.focus();
     }
 
-    function rowsFadeIn(i: number) {
+    function RowsFadeIn(i: number) {
         return rowFadeTime * (i + 1);
     }
 
@@ -289,7 +289,7 @@ export default function Qless() {
                             <tr
                                 key={i}
                                 style={{
-                                    transitionDuration: `${rowsFadeIn(i)}ms`,
+                                    transitionDuration: `${RowsFadeIn(i)}ms`,
                                 }}
                                 className={`row ${
                                     rowVisible == 0 ? "hidden" : ""

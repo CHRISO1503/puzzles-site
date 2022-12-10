@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import Home from "./routes/home";
 import Qless from "./routes/qless";
 import Hue from "./routes/hue";
-import Kakuro from "./routes/kakuro";
+import Minesweeper from "./routes/minesweeper";
 
 const router = createBrowserRouter([
     {
@@ -21,8 +21,8 @@ const router = createBrowserRouter([
         element: <Hue />,
     },
     {
-        path: "/kakuro",
-        element: <Kakuro />,
+        path: "/minesweeper",
+        element: <Minesweeper />,
     }
 ]);
 
