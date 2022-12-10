@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "../styles/minesweeper.css";
 
 export default function Minesweeper() {
@@ -34,6 +34,8 @@ export default function Minesweeper() {
     const [grid, setGrid] = useState([] as number[][]);
     const [mines, setMines] = useState([] as boolean[][]);
     const [tileNumbers, setTileNumbers] = useState([] as number[][]);
+    const [completionText, setCompletionText] = useState("");
+    const puzzleFinished = useRef(false);
 
     useEffect(() => {
         initializeMines();
@@ -58,6 +60,7 @@ export default function Minesweeper() {
             }
         }
         setMines(mines.slice());
+        puzzleFinished.current = false;
     };
 
     const initializeGrid = () => {
@@ -88,11 +91,15 @@ export default function Minesweeper() {
         }
         setTileNumbers(tileNumbers.slice());
         setGrid(grid.slice());
-        console.log(tileNumbers);
     };
 
-    function handleClick(i: number, j: number) {
-        if (mines[i][j]) {
+    function handleRightClick(i: number, j: number) {
+        if (puzzleFinished.current == true) {
+            return;
+        }
+        if (grid[i][j] == 12) {
+            return;
+        } else if (mines[i][j]) {
             showMines(i, j);
         } else if (tileNumbers[i][j] == 0) {
             uncoverTile(i, j);
@@ -100,6 +107,62 @@ export default function Minesweeper() {
             uncoverTile(i, j);
             grid[i][j] = tileNumbers[i][j];
             setGrid(grid.map((row) => row.slice()));
+        }
+        checkForWin();
+    }
+
+    function handleLeftClick(i: number, j: number) {
+        if (puzzleFinished.current) {
+            return;
+        }
+        if (grid[i][j] == 11) {
+            grid[i][j] = 12;
+        } else if (grid[i][j] == 12) {
+            grid[i][j] = 11;
+        } else if (0 < grid[i][j] && grid[i][j] < 9) {
+            chord(i, j);
+        }
+        setGrid(grid.slice());
+        checkForWin();
+    }
+
+    function chord(i: number, j: number) {
+        let flagNumber = 0;
+        for (const adj of ADJACENCIES) {
+            const tileCheckPos = [i + adj[0], j + adj[1]];
+            if (
+                tileCheckPos[0] < 0 ||
+                tileCheckPos[0] >= GRID_HEIGHT ||
+                tileCheckPos[1] < 0 ||
+                tileCheckPos[1] >= GRID_WIDTH
+            ) {
+                continue;
+            } else {
+                if (grid[tileCheckPos[0]][tileCheckPos[1]] == 12) {
+                    flagNumber++;
+                }
+            }
+        }
+        if (grid[i][j] == flagNumber) {
+            for (const adj of ADJACENCIES) {
+                const tileCheckPos = [i + adj[0], j + adj[1]];
+                if (
+                    tileCheckPos[0] < 0 ||
+                    tileCheckPos[0] >= GRID_HEIGHT ||
+                    tileCheckPos[1] < 0 ||
+                    tileCheckPos[1] >= GRID_WIDTH
+                ) {
+                    continue;
+                } else {
+                    if (grid[tileCheckPos[0]][tileCheckPos[1]] == 11) {
+                        if (mines[tileCheckPos[0]][tileCheckPos[1]]) {
+                            showMines(tileCheckPos[0], tileCheckPos[1]);
+                        } else {
+                            uncoverTile(tileCheckPos[0], tileCheckPos[1]);
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -137,6 +200,25 @@ export default function Minesweeper() {
         }
         grid[iExploded][jExploded] = 10;
         setGrid(grid.slice());
+        puzzleFinished.current = true;
+    }
+
+    function checkForWin() {
+        for (let i = 0; i < GRID_HEIGHT; i++) {
+            for (let j = 0; j < GRID_WIDTH; j++) {
+                if (mines[i][j]) {
+                    if (grid[i][j] != 12) {
+                        return;
+                    }
+                } else {
+                    if (grid[i][j] == 11) {
+                        return;
+                    }
+                }
+            }
+        }
+        puzzleFinished.current = true;
+        setCompletionText("Puzzle complete.");
     }
 
     return (
@@ -154,13 +236,21 @@ export default function Minesweeper() {
                                 key={j}
                                 src={`src\\assets\\${TILE_ARRAY[cell]}.png`}
                                 style={{ width: CELL_SIZE, height: CELL_SIZE }}
-                                onClick={() => handleClick(i, j)}
+                                onClick={() => handleLeftClick(i, j)}
+                                onContextMenu={(e) => {
+                                    handleRightClick(i, j);
+                                    e.preventDefault();
+                                }}
                                 draggable="false"
                             ></img>
                         ))}
                     </div>
                 ))}
             </div>
+            <button className="action-button" onClick={initializeMines}>
+                    New Game
+                </button>
+            <p className="board-completion">{completionText}</p>
         </>
     );
 }
