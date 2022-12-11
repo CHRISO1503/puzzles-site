@@ -6,7 +6,7 @@ export type Nullable<T> = T | null;
 
 export default function Qless() {
     const ROWS = 12;
-    const tableSize = 700;
+    const tableSize = 400;
     const [grid, setGrid] = useState([] as string[][]);
     const refs = useRef([] as Nullable<HTMLInputElement>[][]);
     const [direction, setDirection] = useState(true);
@@ -57,8 +57,8 @@ export default function Qless() {
             floodCount.current = 0;
             setFloodedCoords([]);
         }
-        if (errors.length == 0){
-            errors = errors.concat("Puzzle Complete.")
+        if (errors.length == 0) {
+            errors = errors.concat("Puzzle Complete.");
         }
         setBoardErrors(errors);
     }
@@ -281,9 +281,14 @@ export default function Qless() {
 
     return (
         <>
-            <h1 id="title">Q-Less</h1>
-            <div>
-                <table style={{ width: tableSize, height: tableSize }}>
+            <h1 className="q-less" id="title">
+                Q-Less
+            </h1>
+            <div className="crt">
+                <table
+                    style={{ width: tableSize, height: tableSize }}
+                    cellSpacing="0px"
+                >
                     <tbody>
                         {grid.map((row, i) => (
                             <tr
@@ -293,12 +298,12 @@ export default function Qless() {
                                 }}
                                 className={`row ${
                                     rowVisible == 0 ? "hidden" : ""
-                                }`}
+                                } q-less`}
                             >
                                 {row.map((cell, j) => (
                                     <td key={j}>
                                         <input
-                                            className="input"
+                                            className="input q-less"
                                             type="text"
                                             onChange={(e) =>
                                                 changeLetter(e, i, j)
@@ -318,22 +323,33 @@ export default function Qless() {
                     </tbody>
                 </table>
             </div>
-            <div style={{ minHeight: "72px" }}>
+            <div className="q-less" id="die-box"
+                style={{
+                    display: "flex",
+                    minHeight: "40px",
+                    minWidth: tableSize,
+                    borderStyle: "solid",
+                    marginTop: "20px",
+                    marginBottom: "10px",
+                    alignContent: "center",
+                    justifyContent: "center",
+                }}
+            >
                 {letters.map((letter, i) => (
-                    <div className="die-letter" key={i}>
+                    <div className="die-letter q-less" key={i}>
                         {letter}
                     </div>
                 ))}
             </div>
             <div>
-                <button className="action-button" onClick={rollDice}>
+                <button className="action-button q-less" onClick={rollDice}>
                     Re-Roll
                 </button>
-                <button className="action-button" onClick={resetGrid}>
+                <button className="action-button q-less" onClick={resetGrid}>
                     Reset Grid
                 </button>
             </div>
-            <p className="board-errors">{boardErrors}</p>
+            <p className="board-errors q-less">{boardErrors}</p>
         </>
     );
 }

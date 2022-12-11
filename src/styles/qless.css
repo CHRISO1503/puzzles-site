@@ -7,62 +7,106 @@
     flex-direction: column;
 }
 
-#title {
+.q-less#title {
     font-size: 8em;
-    font-family: Georgia;
-    color: lightgray;
+    color: rgb(0, 255, 85);
+    border-style: solid;
+    border-color: rgb(0, 255, 85);
+    padding-left: 5px;
+    padding-right:5px;
+    margin-bottom: 15px;
 }
 
-.action-button {
+.q-less.action-button {
     margin-top: 20px;
-    font-size: 1.5em;
-    width: 200px;
+    font-size: 1.2em;
+    width: 150px;
     display: inline-block;
     margin: 15px;
+    border-radius: 0px;
+    border-color: rgb(0, 255, 85);
+    background-color: transparent;
+    color: rgb(0, 255, 85);
+    font-weight: bold;
+}
+.q-less.action-button:hover {
+    background-color: rgb(0, 255, 85);
+    color: black;
 }
 
-.input {
+.q-less.action-button:active,
+.q-less.action-button:focus {
+    outline: none;
+}
+
+.q-less.input {
     width: 100%;
     height: 100%;
-    font-size: 2.2em;
+    font-size: 1.5em;
     text-align: center;
     caret-color: transparent;
     cursor: pointer;
     font-family: Georgia;
+    color: rgb(0, 255, 85);
+    border-color: rgb(0, 255, 85);
+    background-color: transparent;
+    margin: 0px;
+    padding: 0px;
+    font-weight: bold;
 }
 
-.input:hover {
+.q-less.input:hover {
     outline: 0;
-    background-color: gray;
+    background-color: rgb(5, 94, 35);
     /* transition: 100ms background-color ease; */
 }
 
-.input:focus {
+.q-less.input:focus {
     outline: 0;
-    background: lightgray;
+    animation: cursor-flash 0.8s step-end infinite;
 }
 
-.die-letter {
+@keyframes cursor-flash {
+    0% {
+        background: rgb(5, 94, 35);
+    }
+    50% {
+        background: transparent;
+    }
+    100% {
+        background: rgb(5, 94, 35);
+    }
+}
+
+.q-less.die-letter {
     display: inline-flex;
-    width: 70px;
-    height: 70px;
-    font-size: 2.5em;
+    width: 30px;
+    font-size: 1.5em;
     align-items: center;
     justify-content: center;
     font-family: Georgia;
+    color: rgb(0, 255, 85);
+    border-color: rgb(0, 255, 85);
+    font-weight: bold;
 }
 
-.board-errors {
+.q-less.board-errors {
     font-size: 1.5em;
     display: inline-flex;
     min-height: 50px;
+    color: rgb(0, 255, 85);
+    font-weight: bold;
 }
 
-.row {
+.q-less.row {
     transition: opacity ease;
 }
 
-.hidden {
+.q-less.hidden {
     transition: none;
     opacity: 0;
+}
+
+.q-less#die-box {
+    border-color: rgb(0, 255, 85);
 }
