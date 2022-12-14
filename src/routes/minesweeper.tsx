@@ -36,6 +36,8 @@ export default function Minesweeper() {
     const [tileNumbers, setTileNumbers] = useState([] as number[][]);
     const [completionText, setCompletionText] = useState("");
     const puzzleFinished = useRef(false);
+    const numberOfFlags = useRef(0);
+    const numberOfMines = useRef(0);
 
     useEffect(() => {
         initializeMines();
@@ -48,12 +50,15 @@ export default function Minesweeper() {
     }, [mines]);
 
     const initializeMines = () => {
+        numberOfFlags.current = 0;
+        numberOfMines.current = 0;
         let mines = [] as boolean[][];
         for (let i = 0; i < GRID_HEIGHT; i++) {
             mines.push([]);
             for (let j = 0; j < GRID_WIDTH; j++) {
                 if (Math.random() < MINE_CHANCE) {
                     mines[i].push(true);
+                    numberOfMines.current += 1;
                 } else {
                     mines[i].push(false);
                 }
@@ -118,8 +123,10 @@ export default function Minesweeper() {
         }
         if (grid[i][j] == 11) {
             grid[i][j] = 12;
+            numberOfFlags.current += 1;
         } else if (grid[i][j] == 12) {
             grid[i][j] = 11;
+            numberOfFlags.current -= 1;
         } else if (0 < grid[i][j] && grid[i][j] < 9) {
             chord(i, j);
         }
@@ -128,7 +135,7 @@ export default function Minesweeper() {
     }
 
     function chord(i: number, j: number) {
-        let flagNumber = 0;
+        let numberOfFlags = 0;
         for (const adj of ADJACENCIES) {
             const tileCheckPos = [i + adj[0], j + adj[1]];
             if (
@@ -140,11 +147,11 @@ export default function Minesweeper() {
                 continue;
             } else {
                 if (grid[tileCheckPos[0]][tileCheckPos[1]] == 12) {
-                    flagNumber++;
+                    numberOfFlags++;
                 }
             }
         }
-        if (grid[i][j] == flagNumber) {
+        if (grid[i][j] == numberOfFlags) {
             for (const adj of ADJACENCIES) {
                 const tileCheckPos = [i + adj[0], j + adj[1]];
                 if (
@@ -205,6 +212,10 @@ export default function Minesweeper() {
     }
 
     function checkForWin() {
+        if (numberOfFlags.current != numberOfMines.current) {
+            //console.log(`flags: ${numberOfFlags.current} mines: ${numberOfMines.current}`);
+            return;
+        }
         for (let i = 0; i < GRID_HEIGHT; i++) {
             for (let j = 0; j < GRID_WIDTH; j++) {
                 if (mines[i][j]) {
@@ -224,7 +235,9 @@ export default function Minesweeper() {
 
     return (
         <>
-            <h1 className="minesweeper text-crt crt" id="title">Minesweeper</h1>
+            <h1 className="minesweeper text-crt crt" id="title">
+                Minesweeper
+            </h1>
             <div className="minesweeper board">
                 {grid.map((row, i) => (
                     <div
@@ -254,10 +267,15 @@ export default function Minesweeper() {
                     </div>
                 ))}
             </div>
-            <button className="minesweeper text-crt action-button" onClick={initializeMines}>
+            <button
+                className="minesweeper text-crt action-button"
+                onClick={initializeMines}
+            >
                 New Game
             </button>
-            <p className="minesweeper board-completion text-crt">{completionText}</p>
+            <p className="minesweeper board-completion text-crt">
+                {completionText}
+            </p>
         </>
     );
 }
