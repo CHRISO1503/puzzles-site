@@ -4,6 +4,7 @@
     min-height: 50px;
     color: rgb(0, 255, 85);
 }
+
 .minesweeper#title {
     font-size: 8em;
     color: rgb(0, 255, 85);
@@ -26,13 +27,13 @@
     font-weight: bold;
 }
 
-.hue.action-button:hover {
+.minesweeper.action-button:hover {
     background-color: rgb(0, 255, 85);
     color: black;
 }
 
-.hue.action-button:active,
-.hue.action-button:focus {
+.minesweeper.action-button:active,
+.minesweeper.action-button:focus {
     outline: none;
 }
 

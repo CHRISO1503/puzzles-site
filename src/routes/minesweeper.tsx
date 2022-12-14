@@ -224,8 +224,8 @@ export default function Minesweeper() {
 
     return (
         <>
-            <h1 className="minesweeper" id="title">Minesweeper</h1>
-            <div className="minesweeper crt board">
+            <h1 className="minesweeper text-crt crt" id="title">Minesweeper</h1>
+            <div className="minesweeper board">
                 {grid.map((row, i) => (
                     <div
                         key={i}
@@ -254,10 +254,10 @@ export default function Minesweeper() {
                     </div>
                 ))}
             </div>
-            <button className="minesweeper action-button" onClick={initializeMines}>
+            <button className="minesweeper text-crt action-button" onClick={initializeMines}>
                 New Game
             </button>
-            <p className="minesweeper board-completion">{completionText}</p>
+            <p className="minesweeper board-completion text-crt">{completionText}</p>
         </>
     );
 }

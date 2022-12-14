@@ -1,5 +1,5 @@
 .hue#title {
-    font-size: 8em;
+    font-size: 7em;
     color: rgb(0, 255, 85);
     border-style: solid;
     border-color: rgb(0, 255, 85);
@@ -20,6 +20,7 @@
     color: rgb(0, 255, 85);
     font-weight: bold;
 }
+
 .hue.action-button:hover {
     background-color: rgb(0, 255, 85);
     color: black;

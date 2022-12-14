@@ -281,7 +281,7 @@ export default function Qless() {
 
     return (
         <>
-            <h1 className="q-less" id="title">
+            <h1 className="q-less text-crt" id="title">
                 Q-Less
             </h1>
             <div className="crt">
@@ -323,7 +323,7 @@ export default function Qless() {
                     </tbody>
                 </table>
             </div>
-            <div className="q-less" id="die-box"
+            <div className="q-less text-crt" id="die-box"
                 style={{
                     display: "flex",
                     minHeight: "40px",
@@ -342,14 +342,14 @@ export default function Qless() {
                 ))}
             </div>
             <div>
-                <button className="action-button q-less" onClick={rollDice}>
+                <button className="text-crt action-button q-less" onClick={rollDice}>
                     Re-Roll
                 </button>
-                <button className="action-button q-less" onClick={resetGrid}>
+                <button className="text-crt action-button q-less" onClick={resetGrid}>
                     Reset Grid
                 </button>
             </div>
-            <p className="board-errors q-less">{boardErrors}</p>
+            <p className="board-errors q-less text-crt">{boardErrors}</p>
         </>
     );
 }

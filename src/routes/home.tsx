@@ -4,7 +4,7 @@ import "../styles/home.css";
 export default function Home() {
     return (
         <>
-            <table className="nav-table">
+            <table className="nav-table text-crt crt">
                 <tbody>
                     <tr>
                         <td className="home-td">

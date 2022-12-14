@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/hue.css";
 
 export default function Hue() {
-    const SQUARE_WIDTH = 65;
+    const SQUARE_WIDTH = 59;
     const NUMBER_OF_ROWS = 10;
     const NUMBER_OF_COLUMNS = 12;
     const [grid, setGrid] = useState([] as number[][][]);
@@ -186,7 +186,7 @@ export default function Hue() {
 
     return (
         <>
-            <h1 className="hue" id="title">
+            <h1 className="text-crt hue" id="title">
                 Hue
             </h1>
             <div className="hue crt board">
@@ -221,29 +221,29 @@ export default function Hue() {
                 ))}
             </div>
             <div className="hue">
-                <button className="hue action-button" onClick={shuffleBoard}>
+                <button className="hue action-button text-crt" onClick={shuffleBoard}>
                     Shuffle
                 </button>
                 <button
-                    className="hue action-button"
+                    className="hue action-button text-crt"
                     onClick={initializeColours}
                 >
                     New Game
                 </button>
                 <button
-                    className="hue action-button"
+                    className="hue action-button text-crt"
                     onClick={resetAnchorPoints}
                 >
                     Reset Fixed
                 </button>
                 <button
-                    className="hue action-button"
+                    className="hue action-button text-crt" 
                     onClick={() => checkProgress(true)}
                 >
                     See Progress
                 </button>
             </div>
-            <p className="hue board-completion">{completionText}</p>
+            <p className="hue board-completion text-crt">{completionText}</p>
         </>
     );
 }
