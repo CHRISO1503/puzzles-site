@@ -213,7 +213,6 @@ export default function Minesweeper() {
 
     function checkForWin() {
         if (numberOfFlags.current != numberOfMines.current) {
-            //console.log(`flags: ${numberOfFlags.current} mines: ${numberOfMines.current}`);
             return;
         }
         for (let i = 0; i < GRID_HEIGHT; i++) {

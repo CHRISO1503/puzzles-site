@@ -303,7 +303,7 @@ export default function Qless() {
                                 {row.map((cell, j) => (
                                     <td key={j}>
                                         <input
-                                            className="input q-less"
+                                            className="input q-less text-crt"
                                             type="text"
                                             onChange={(e) =>
                                                 changeLetter(e, i, j)
