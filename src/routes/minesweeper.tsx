@@ -249,7 +249,7 @@ export default function Minesweeper() {
                         {row.map((cell, j) => (
                             <img
                                 key={j}
-                                src={`src\\assets\\${TILE_ARRAY[cell]}.png`}
+                                src={`../src/assets/${TILE_ARRAY[cell]}.png`}
                                 style={{
                                     width: CELL_SIZE,
                                     height: CELL_SIZE,
