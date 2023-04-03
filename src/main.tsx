@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./styles/index.css";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { RouterProvider, createHashRouter } from "react-router-dom";
 import Home from "./routes/home";
 import Qless from "./routes/qless";
 import Hue from "./routes/hue";
 import Minesweeper from "./routes/minesweeper";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
     {
         path: "/",
         element: <Home />,
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     {
         path: "/minesweeper",
         element: <Minesweeper />,
-    }
+    },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
